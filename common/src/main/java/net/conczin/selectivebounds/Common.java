@@ -23,8 +23,18 @@ public class Common {
         return lastInteractTime;
     }
 
-    public static boolean shouldShowOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player) {
+    public static boolean shouldBlockOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player) {
         Config c = Config.getInstance();
+
+        Item tool = player.getItemInHand(player.getUsedItemHand()).getItem();
+
+        // The item is explicitly black-/whitelisted
+        TagManager.FilteredType filteredType = c.tagManager.get(tool, blockState.getBlock());
+        if (filteredType == TagManager.FilteredType.BLACKLIST) {
+            return true;
+        } else if (filteredType == TagManager.FilteredType.WHITELIST) {
+            return false;
+        }
 
         // Sneaking
         if (c.showOnSneak && entity.isShiftKeyDown()) return false;
@@ -32,8 +42,6 @@ public class Common {
         // A block has been placed or broken recently
         long diff = System.currentTimeMillis() - Common.getLastInteractTime();
         if (c.showOnAction && diff < c.showOnActionTime * 1000) return false;
-
-        Item tool = player.getItemInHand(player.getUsedItemHand()).getItem();
 
         // The current tool cannot break the block
         if (c.considerCanAttackBlock && !tool.canAttackBlock(blockState, player.level(), blockPos, player)) {
