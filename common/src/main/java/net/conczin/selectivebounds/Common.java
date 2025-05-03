@@ -49,8 +49,9 @@ public class Common {
             return true;
         }
 
-        // The item can be placed and would not replace a block
-        if  (c.considerCanBePlaced && tool instanceof BlockItem && !blockState.canBeReplaced()) {
+        // The item can be placed
+        // TODO: Not accurate
+        if (c.considerCanBePlaced && tool instanceof BlockItem blockItem && blockItem.getBlock().canSurvive(blockItem.getBlock().defaultBlockState(), entity.level(), blockPos.above())) {
             return false;
         }
 
