@@ -1,3 +1,7 @@
+# 0.0.3
+
+* Fixed Forge being stupid
+
 # 0.0.2
 
 * Added configurable overrides
