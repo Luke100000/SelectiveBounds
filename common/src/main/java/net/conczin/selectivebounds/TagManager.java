@@ -36,7 +36,7 @@ public class TagManager {
             return tagToItemsCache.get(tag);
         }
 
-        ResourceLocation location = new ResourceLocation(tag.startsWith("#") ? tag.substring(1) : tag);
+        ResourceLocation location = ResourceLocation.parse(tag.startsWith("#") ? tag.substring(1) : tag);
         TagKey<Item> tagKey = TagKey.create(BuiltInRegistries.ITEM.key(), location);
         Set<Item> items = new HashSet<>();
         for (Holder<Item> holder : BuiltInRegistries.ITEM.getTagOrEmpty(tagKey)) {
@@ -52,7 +52,7 @@ public class TagManager {
             return tagToBlocksCache.get(tag);
         }
 
-        ResourceLocation location = new ResourceLocation(tag.startsWith("#") ? tag.substring(1) : tag);
+        ResourceLocation location = ResourceLocation.parse(tag.startsWith("#") ? tag.substring(1) : tag);
         TagKey<Block> tagKey = TagKey.create(BuiltInRegistries.BLOCK.key(), location);
         Set<Block> blocks = new HashSet<>();
         for (Holder<Block> holder : BuiltInRegistries.BLOCK.getTagOrEmpty(tagKey)) {

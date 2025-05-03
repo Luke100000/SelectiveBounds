@@ -6,6 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class Common {
@@ -27,7 +28,8 @@ public class Common {
     public static boolean shouldBlockOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player) {
         Config c = Config.getInstance();
 
-        Item tool = player.getItemInHand(player.getUsedItemHand()).getItem();
+        ItemStack toolStack = player.getItemInHand(player.getUsedItemHand());
+        Item tool = toolStack.getItem();
 
         // The item is explicitly black-/whitelisted
         TagManager.FilteredType filteredType = c.tagManager.get(tool, blockState.getBlock());
@@ -51,11 +53,11 @@ public class Common {
 
         // The item can be placed
         // TODO: Not accurate
-        if (c.considerCanBePlaced && tool instanceof BlockItem blockItem && blockItem.getBlock().canSurvive(blockItem.getBlock().defaultBlockState(), entity.level(), blockPos.above())) {
+        if (c.considerCanBePlaced && tool instanceof BlockItem && blockState.canSurvive(entity.level(), blockPos.above())) {
             return false;
         }
 
         // The current tool is not the correct tool for the block
-        return c.considerIsCorrectToolForDrops && !tool.isCorrectToolForDrops(blockState);
+        return c.considerIsCorrectToolForDrops && !tool.isCorrectToolForDrops(toolStack, blockState);
     }
 }
