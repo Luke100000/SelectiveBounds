@@ -50,6 +50,9 @@ public final class Config extends JsonConfig {
     // Hide bounds when the tool is not the correct tool for drops
     public boolean considerIsCorrectToolForDrops = true;
 
+    // Shows bounds when a block can be placed (but not on replaceable blocks like bushes)
+    public boolean considerCanBePlaced = false;
+
     // Overrides of item-on-block interactions
     // Supports item/block resource locations, tags, and "all".
     public List<OutlineOverride> overrides = new ArrayList<>();

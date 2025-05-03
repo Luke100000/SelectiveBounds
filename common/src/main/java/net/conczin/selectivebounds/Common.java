@@ -4,6 +4,7 @@ import net.conczin.selectivebounds.config.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -46,6 +47,11 @@ public class Common {
         // The current tool cannot break the block
         if (c.considerCanAttackBlock && !tool.canAttackBlock(blockState, player.level(), blockPos, player)) {
             return true;
+        }
+
+        // The item can be placed and would not replace a block
+        if  (c.considerCanBePlaced && tool instanceof BlockItem && !blockState.canBeReplaced()) {
+            return false;
         }
 
         // The current tool is not the correct tool for the block

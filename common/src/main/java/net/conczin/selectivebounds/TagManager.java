@@ -52,7 +52,8 @@ public class TagManager {
             return tagToBlocksCache.get(tag);
         }
 
-        TagKey<Block> tagKey = TagKey.create(BuiltInRegistries.BLOCK.key(), new ResourceLocation(tag));
+        ResourceLocation location = new ResourceLocation(tag.startsWith("#") ? tag.substring(1) : tag);
+        TagKey<Block> tagKey = TagKey.create(BuiltInRegistries.BLOCK.key(), location);
         Set<Block> blocks = new HashSet<>();
         for (Holder<Block> holder : BuiltInRegistries.BLOCK.getTagOrEmpty(tagKey)) {
             blocks.add(holder.value());
