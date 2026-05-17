@@ -20,8 +20,6 @@
       "net.conczin.selectivebounds.SelectiveBounds"
     ]
   },
-  "modmenu": [
-  ],
   "mixins": [
     "${mod_id}.mixins.json"
   ],
@@ -34,4 +32,3 @@
   "suggests": {
   }
 }
-  

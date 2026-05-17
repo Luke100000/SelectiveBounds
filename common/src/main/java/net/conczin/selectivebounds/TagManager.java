@@ -3,7 +3,7 @@ package net.conczin.selectivebounds;
 import net.conczin.selectivebounds.config.Config;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -36,7 +36,7 @@ public class TagManager {
             return tagToItemsCache.get(tag);
         }
 
-        ResourceLocation location = ResourceLocation.parse(tag.startsWith("#") ? tag.substring(1) : tag);
+        Identifier location = Identifier.parse(tag.startsWith("#") ? tag.substring(1) : tag);
         TagKey<Item> tagKey = TagKey.create(BuiltInRegistries.ITEM.key(), location);
         Set<Item> items = new HashSet<>();
         for (Holder<Item> holder : BuiltInRegistries.ITEM.getTagOrEmpty(tagKey)) {
@@ -52,7 +52,7 @@ public class TagManager {
             return tagToBlocksCache.get(tag);
         }
 
-        ResourceLocation location = ResourceLocation.parse(tag.startsWith("#") ? tag.substring(1) : tag);
+        Identifier location = Identifier.parse(tag.startsWith("#") ? tag.substring(1) : tag);
         TagKey<Block> tagKey = TagKey.create(BuiltInRegistries.BLOCK.key(), location);
         Set<Block> blocks = new HashSet<>();
         for (Holder<Block> holder : BuiltInRegistries.BLOCK.getTagOrEmpty(tagKey)) {
@@ -63,8 +63,8 @@ public class TagManager {
     }
 
     public FilteredType get(Item item, Block block) {
-        ResourceLocation itemKey = BuiltInRegistries.ITEM.getKey(item);
-        ResourceLocation blockKey = BuiltInRegistries.BLOCK.getKey(block);
+        Identifier itemKey = BuiltInRegistries.ITEM.getKey(item);
+        Identifier blockKey = BuiltInRegistries.BLOCK.getKey(block);
         String key = itemKey + "$" + blockKey;
         if (cache.containsKey(key)) {
             return cache.get(key);

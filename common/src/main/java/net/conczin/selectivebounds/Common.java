@@ -47,7 +47,7 @@ public class Common {
         if (c.showOnAction && diff < c.showOnActionTime * 1000) return false;
 
         // The current tool cannot break the block
-        if (c.considerCanAttackBlock && !tool.canAttackBlock(blockState, player.level(), blockPos, player)) {
+        if (c.considerCanAttackBlock && !toolStack.canDestroyBlock(blockState, player.level(), blockPos, player)) {
             return true;
         }
 
