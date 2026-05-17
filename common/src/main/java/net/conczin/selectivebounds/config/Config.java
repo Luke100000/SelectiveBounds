@@ -35,7 +35,7 @@ public final class Config extends JsonConfig {
     }
 
     @SuppressWarnings("unused")
-    public String _documentation = "https://github.com/Luke100000/SelectiveBounds/blob/1.21.1/common/src/main/java/net/conczin/selectivebounds/config/Config.java";
+    public String _documentation = "https://github.com/Luke100000/SelectiveBounds/blob/main/common/src/main/java/net/conczin/selectivebounds/config/Config.java";
 
     // Show bounds when sneaking
     public boolean showOnSneak = true;
