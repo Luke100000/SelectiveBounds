@@ -70,6 +70,17 @@ subprojects {
             name = 'CodeMC'
             url = 'https://repo.codemc.io/repository/maven-snapshots/'
         }
+        maven {
+            name = 'Architectury'
+            url = 'https://maven.architectury.dev/'
+        }
+        maven {
+            name = 'Modrinth'
+            url = 'https://api.modrinth.com/maven'
+            content {
+                includeGroup 'maven.modrinth'
+            }
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

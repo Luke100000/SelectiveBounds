@@ -77,6 +77,8 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+    runtimeOnly fg.deobf("maven.modrinth:rhyHyQke:${seamless_forge_version}")
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 }
