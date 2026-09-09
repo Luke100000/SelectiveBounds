@@ -1,3 +1,8 @@
+# 0.0.4
+
+* Added compat with Seamless and similar mods
+* Force generation of config json on startup
+
 # 0.0.3
 
 * Fixed Forge being stupid
