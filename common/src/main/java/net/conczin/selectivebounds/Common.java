@@ -14,7 +14,8 @@ public class Common {
     public static final String MOD_ID = "selectivebounds";
 
     public static void init() {
-        // No-op
+        //noinspection ResultOfMethodCallIgnored
+        Config.getInstance();
     }
 
     public static void interact() {

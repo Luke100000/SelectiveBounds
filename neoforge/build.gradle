@@ -37,3 +37,8 @@ neoForge {
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    runtimeOnly "maven.modrinth:rhyHyQke:${seamless_neoforge_version}"
+}
