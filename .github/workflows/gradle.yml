@@ -33,7 +33,7 @@ jobs:
           separator: "+"
           msg: ${{ github.ref_name }}
       - name: "Upload Fabric"
-        uses: Kir-Antipov/mc-publish@v3.3.0
+        uses: Kir-Antipov/mc-publish@v3.3.1
         if: ${{ success() && startsWith(github.ref, 'refs/tags/') }}
         with:
           modrinth-id: ${{ env.MODRINTH_ID }}
@@ -47,6 +47,7 @@ jobs:
           files: "fabric/build/libs/selectivebounds-fabric-${{steps.split.outputs._1}}-${{steps.split.outputs._0}}.jar"
           loaders: |
             fabric
+          environment: client
           game-versions: |
             ${{steps.split.outputs._1}}
           java: |
@@ -54,7 +55,7 @@ jobs:
 
           fail-mode: skip
       - name: "Upload NeoForge"
-        uses: Kir-Antipov/mc-publish@v3.3.0
+        uses: Kir-Antipov/mc-publish@v3.3.1
         if: ${{ success() && startsWith(github.ref, 'refs/tags/') }}
         with:
           modrinth-id: ${{ env.MODRINTH_ID }}
@@ -68,6 +69,7 @@ jobs:
           files: "neoforge/build/libs/selectivebounds-neoforge-${{steps.split.outputs._1}}-${{steps.split.outputs._0}}.jar"
           loaders: |
             neoforge
+          environment: client
           game-versions: |
             ${{steps.split.outputs._1}}
           java: |
