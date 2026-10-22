@@ -3,10 +3,14 @@
   "minVersion": "0.8",
   "package": "net.conczin.selectivebounds.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [
-    "BlockItemMixin"
+  "mixins": [],
+  "client": [
+    "BlockItemInvoker",
+    "BlockItemMixin",
+    "ClientPacketListenerMixin",
+    "LevelExtractorMixin",
+    "MultiPlayerGameModeMixin"
   ],
-  "client": ["LevelExtractorMixin", "MultiPlayerGameModeMixin"],
   "server": [
   ],
   "injectors": {
