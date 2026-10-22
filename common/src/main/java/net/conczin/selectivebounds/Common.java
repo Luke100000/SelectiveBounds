@@ -34,7 +34,7 @@ public class Common {
     public static boolean shouldBlockOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player, HitResult hitResult) {
         Config c = Config.getInstance();
 
-        ItemStack toolStack = player.getItemInHand(player.getUsedItemHand());
+        ItemStack toolStack = player.getMainHandItem();
         Item tool = toolStack.getItem();
 
         // Main-hand overrides take precedence when both hands match.
