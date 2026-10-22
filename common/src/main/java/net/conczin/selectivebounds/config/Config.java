@@ -2,7 +2,7 @@ package net.conczin.selectivebounds.config;
 
 import net.conczin.selectivebounds.Common;
 import net.conczin.selectivebounds.TagManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public final class Config extends JsonConfig {
 
     private static boolean isInvalidSelector(String selector) {
         if (selector == null) return true;
-        ResourceLocation location = ResourceLocation.tryParse(selector.startsWith("#") ? selector.substring(1) : selector);
+        Identifier location = Identifier.tryParse(selector.startsWith("#") ? selector.substring(1) : selector);
         return location == null || location.getPath().isEmpty();
     }
 
