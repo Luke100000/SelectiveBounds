@@ -1,6 +1,7 @@
 # 0.05
 
 * Fixed offhand items being ignored
+* Various fixes
 
 # 0.0.4
 
