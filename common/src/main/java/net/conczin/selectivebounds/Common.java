@@ -2,6 +2,7 @@ package net.conczin.selectivebounds;
 
 import net.conczin.selectivebounds.config.Config;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -28,10 +29,14 @@ public class Common {
     public static boolean shouldBlockOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player) {
         Config c = Config.getInstance();
 
-        Item tool = player.getItemInHand(player.getUsedItemHand()).getItem();
+        Item tool = player.getMainHandItem().getItem();
 
-        // The item is explicitly black-/whitelisted
+        // Main-hand overrides take precedence when both hands match.
         TagManager.FilteredType filteredType = c.tagManager.get(tool, blockState.getBlock());
+        if (filteredType == TagManager.FilteredType.IGNORE && !player.getOffhandItem().isEmpty()) {
+            filteredType = c.tagManager.get(player.getOffhandItem().getItem(), blockState.getBlock());
+        }
+
         if (filteredType == TagManager.FilteredType.BLACKLIST) {
             return true;
         } else if (filteredType == TagManager.FilteredType.WHITELIST) {
@@ -45,15 +50,19 @@ public class Common {
         long diff = System.currentTimeMillis() - Common.getLastInteractTime();
         if (c.showOnAction && diff < c.showOnActionTime * 1000) return false;
 
+        // The item can be placed
+        if (c.considerCanBePlaced) {
+            for (InteractionHand hand : InteractionHand.values()) {
+                Item item = player.getItemInHand(hand).getItem();
+                if (item instanceof BlockItem blockItem && blockItem.getBlock().canSurvive(blockItem.getBlock().defaultBlockState(), entity.level(), blockPos.above())) {
+                    return false;
+                }
+            }
+        }
+
         // The current tool cannot break the block
         if (c.considerCanAttackBlock && !tool.canAttackBlock(blockState, player.level(), blockPos, player)) {
             return true;
-        }
-
-        // The item can be placed
-        // TODO: Not accurate
-        if (c.considerCanBePlaced && tool instanceof BlockItem blockItem && blockItem.getBlock().canSurvive(blockItem.getBlock().defaultBlockState(), entity.level(), blockPos.above())) {
-            return false;
         }
 
         // The current tool is not the correct tool for the block

@@ -1,3 +1,7 @@
+# 0.05
+
+* Fixed offhand items being ignored
+
 # 0.0.4
 
 * Added compat with Seamless and similar mods
