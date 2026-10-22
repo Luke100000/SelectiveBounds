@@ -31,6 +31,12 @@ public class TagManager {
         this.config = config;
     }
 
+    public void clearCaches() {
+        tagToItemsCache.clear();
+        tagToBlocksCache.clear();
+        cache.clear();
+    }
+
     public Set<Item> getItemsFromTag(String tag) {
         if (tagToItemsCache.containsKey(tag)) {
             return tagToItemsCache.get(tag);
