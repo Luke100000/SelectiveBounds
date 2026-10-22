@@ -2,6 +2,7 @@ package net.conczin.selectivebounds.mixin;
 
 import net.conczin.selectivebounds.Common;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.extract.LevelExtractor;
 import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
@@ -31,7 +32,7 @@ public class LevelExtractorMixin {
         BlockPos blockPos = outline.pos();
         BlockState blockState = this.level.getBlockState(blockPos);
         Entity entity = camera.entity();
-        if (entity instanceof Player player && Common.shouldBlockOutline(entity, blockPos, blockState, player)) {
+        if (entity instanceof Player player && Common.shouldBlockOutline(entity, blockPos, blockState, player, Minecraft.getInstance().hitResult)) {
             renderState.blockOutlineRenderState = null;
         }
     }
