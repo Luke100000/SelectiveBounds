@@ -2,12 +2,13 @@ package net.conczin.selectivebounds.config;
 
 import net.conczin.selectivebounds.Common;
 import net.conczin.selectivebounds.TagManager;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Config extends JsonConfig {
-    private static final Config INSTANCE = loadOrCreate(new Config(), Config.class);
+    private static final Config INSTANCE = loadConfig();
 
     public Config() {
         super(Common.MOD_ID);
@@ -15,6 +16,34 @@ public final class Config extends JsonConfig {
 
     public static Config getInstance() {
         return INSTANCE;
+    }
+
+    private static Config loadConfig() {
+        Config config = loadOrCreate(new Config(), Config.class);
+        config.validateOverrides();
+        return config;
+    }
+
+    private void validateOverrides() {
+        if (overrides == null) {
+            LOGGER.warn("Ignoring null outline override list.");
+            overrides = new ArrayList<>();
+            return;
+        }
+
+        for (int i = overrides.size() - 1; i >= 0; i--) {
+            OutlineOverride override = overrides.get(i);
+            if (override == null || isInvalidSelector(override.item) || isInvalidSelector(override.block)) {
+                LOGGER.warn("Ignoring invalid outline override at index {}: item and block must be resource IDs, tags, or 'all'.", i);
+                overrides.remove(i);
+            }
+        }
+    }
+
+    private static boolean isInvalidSelector(String selector) {
+        if (selector == null) return true;
+        Identifier location = Identifier.tryParse(selector.startsWith("#") ? selector.substring(1) : selector);
+        return location == null || location.getPath().isEmpty();
     }
 
     @Override

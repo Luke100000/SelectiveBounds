@@ -38,7 +38,7 @@ public class LevelRendererMixin {
         BlockPos blockPos = outline.pos();
         BlockState blockState = this.level.getBlockState(blockPos);
         Entity entity = this.minecraft.getCameraEntity();
-        if (entity instanceof Player player && Common.shouldBlockOutline(entity, blockPos, blockState, player)) {
+        if (entity instanceof Player player && Common.shouldBlockOutline(entity, blockPos, blockState, player, this.minecraft.hitResult)) {
             renderState.blockOutlineRenderState = null;
             ci.cancel();
         }

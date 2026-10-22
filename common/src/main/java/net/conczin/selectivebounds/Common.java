@@ -1,13 +1,18 @@
 package net.conczin.selectivebounds;
 
 import net.conczin.selectivebounds.config.Config;
+import net.conczin.selectivebounds.mixin.BlockItemInvoker;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public class Common {
     private static long lastInteractTime;
@@ -26,14 +31,18 @@ public class Common {
         return lastInteractTime;
     }
 
-    public static boolean shouldBlockOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player) {
+    public static boolean shouldBlockOutline(Entity entity, BlockPos blockPos, BlockState blockState, Player player, HitResult hitResult) {
         Config c = Config.getInstance();
 
-        ItemStack toolStack = player.getItemInHand(player.getUsedItemHand());
+        ItemStack toolStack = player.getMainHandItem();
         Item tool = toolStack.getItem();
 
-        // The item is explicitly black-/whitelisted
+        // Main-hand overrides take precedence when both hands match.
         TagManager.FilteredType filteredType = c.tagManager.get(tool, blockState.getBlock());
+        if (filteredType == TagManager.FilteredType.IGNORE && !player.getOffhandItem().isEmpty()) {
+            filteredType = c.tagManager.get(player.getOffhandItem().getItem(), blockState.getBlock());
+        }
+
         if (filteredType == TagManager.FilteredType.BLACKLIST) {
             return true;
         } else if (filteredType == TagManager.FilteredType.WHITELIST) {
@@ -47,15 +56,25 @@ public class Common {
         long diff = System.currentTimeMillis() - Common.getLastInteractTime();
         if (c.showOnAction && diff < c.showOnActionTime * 1000) return false;
 
+        // Use vanilla's placement checks without placing or consuming the item.
+        if (c.considerCanBePlaced && hitResult instanceof BlockHitResult blockHit && blockHit.getBlockPos().equals(blockPos)) {
+            for (InteractionHand hand : InteractionHand.values()) {
+                ItemStack stack = player.getItemInHand(hand);
+                if (!(stack.getItem() instanceof BlockItem blockItem) || !blockItem.getBlock().isEnabled(player.level().enabledFeatures())) continue;
+
+                BlockPlaceContext context = new BlockPlaceContext(player, hand, stack, blockHit);
+                if (!context.canPlace()) continue;
+
+                context = blockItem.updatePlacementContext(context);
+                if (context != null && ((BlockItemInvoker) blockItem).selectivebounds$getPlacementState(context) != null) {
+                    return false;
+                }
+            }
+        }
+
         // The current tool cannot break the block
         if (c.considerCanAttackBlock && !toolStack.canDestroyBlock(blockState, player.level(), blockPos, player)) {
             return true;
-        }
-
-        // The item can be placed
-        // TODO: Not accurate
-        if (c.considerCanBePlaced && tool instanceof BlockItem && blockState.canSurvive(entity.level(), blockPos.above())) {
-            return false;
         }
 
         // The current tool is not the correct tool for the block

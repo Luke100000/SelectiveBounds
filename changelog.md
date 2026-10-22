@@ -1,3 +1,9 @@
+# 0.0.5
+
+* Fixed offhand items being ignored
+* Valid placement check is now more accurate
+* Various fixes
+
 # 0.0.4
 
 * Added compat with Seamless and similar mods
