@@ -4,10 +4,14 @@
   "package": "net.conczin.selectivebounds.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "BlockItemMixin"
+  "mixins": [],
+  "client": [
+    "BlockItemInvoker",
+    "BlockItemMixin",
+    "ClientPacketListenerMixin",
+    "LevelRendererMixin",
+    "MultiPlayerGameModeMixin"
   ],
-  "client": ["LevelRendererMixin", "MultiPlayerGameModeMixin"],
   "server": [
   ],
   "injectors": {
